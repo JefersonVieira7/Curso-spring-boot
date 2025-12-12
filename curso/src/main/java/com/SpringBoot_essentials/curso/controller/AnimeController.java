@@ -1,6 +1,8 @@
 package com.SpringBoot_essentials.curso.controller;
 
 import com.SpringBoot_essentials.curso.domain.Anime;
+import com.SpringBoot_essentials.curso.requests.AnimePostRequestBody;
+import com.SpringBoot_essentials.curso.requests.AnimePutResquestBody;
 import com.SpringBoot_essentials.curso.service.AnimeService;
 import com.SpringBoot_essentials.curso.util.DateUtil;
 import lombok.RequiredArgsConstructor;
@@ -30,12 +32,12 @@ public class AnimeController {
     @GetMapping(path = "/{id}")
     public ResponseEntity<Anime> findById(@PathVariable long id) {
         log.info(dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
-        return ResponseEntity.ok(animeService.findById(id));
+        return ResponseEntity.ok(animeService.findByIdOrThrowBadRequestException(id));
     }
 
     @PostMapping
-    public ResponseEntity<Anime> save(@RequestBody Anime anime) {
-        return new ResponseEntity<>(animeService.save(anime), HttpStatus.CREATED);
+    public ResponseEntity<Anime> save(@RequestBody AnimePostRequestBody animePostRequestBody) throws InterruptedException {
+        return new ResponseEntity<>(animeService.save(animePostRequestBody), HttpStatus.CREATED);
     }
 
     @DeleteMapping(path = "/{id}")
@@ -45,8 +47,8 @@ public class AnimeController {
     }
 
     @PutMapping
-    public ResponseEntity<Void> replace(@RequestBody Anime anime) {
-        animeService.replace(anime);
+    public ResponseEntity<Void> replace(@RequestBody AnimePutResquestBody animePutResquestBody) {
+        animeService.replace(animePutResquestBody);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
