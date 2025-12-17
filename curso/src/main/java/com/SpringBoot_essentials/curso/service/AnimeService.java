@@ -1,6 +1,7 @@
 package com.SpringBoot_essentials.curso.service;
 
 import com.SpringBoot_essentials.curso.domain.Anime;
+import com.SpringBoot_essentials.curso.exception.BadRequestException;
 import com.SpringBoot_essentials.curso.mapper.AnimeMapper;
 import com.SpringBoot_essentials.curso.repository.AnimeRepository;
 import com.SpringBoot_essentials.curso.requests.AnimePostRequestBody;
@@ -28,7 +29,7 @@ public class AnimeService {
 
     public Anime findByIdOrThrowBadRequestException(long id){
         return animeRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Anime not Found"));
+                .orElseThrow(() -> new BadRequestException("Anime not Found"));
     }
 
     public Anime save(AnimePostRequestBody animePostRequestBody){
