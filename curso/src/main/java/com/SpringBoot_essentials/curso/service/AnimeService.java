@@ -7,9 +7,8 @@ import com.SpringBoot_essentials.curso.repository.AnimeRepository;
 import com.SpringBoot_essentials.curso.requests.AnimePostRequestBody;
 import com.SpringBoot_essentials.curso.requests.AnimePutResquestBody;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
+
 
 import java.util.List;
 
@@ -19,28 +18,28 @@ public class AnimeService {
 
     private final AnimeRepository animeRepository;
 
-    public List<Anime> listAll(){
+    public List<Anime> listAll() {
         return animeRepository.findAll();
     }
 
-    public List<Anime> findbyName(String name){
+    public List<Anime> findbyName(String name) {
         return animeRepository.findByName(name);
     }
 
-    public Anime findByIdOrThrowBadRequestException(long id){
+    public Anime findByIdOrThrowBadRequestException(long id) {
         return animeRepository.findById(id)
                 .orElseThrow(() -> new BadRequestException("Anime not Found"));
     }
 
-    public Anime save(AnimePostRequestBody animePostRequestBody){
+    public Anime save(AnimePostRequestBody animePostRequestBody) {
         return animeRepository.save(AnimeMapper.INSTANCE.toAnime(animePostRequestBody));
     }
 
-    public void delete(long id){
+    public void delete(long id) {
         animeRepository.delete(findByIdOrThrowBadRequestException(id));
     }
 
-    public void replace(AnimePutResquestBody animePutResquestBody){
+    public void replace(AnimePutResquestBody animePutResquestBody) {
         Anime savedAnime = findByIdOrThrowBadRequestException(animePutResquestBody.getId());
         Anime anime = AnimeMapper.INSTANCE.toAnime(animePutResquestBody);
         anime.setId(savedAnime.getId());
