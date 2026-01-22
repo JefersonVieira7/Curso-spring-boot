@@ -14,6 +14,7 @@ public class RestExceptionHandler {
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<BadRequestExceptionDetails> handlerBadRequestException(BadRequestException bre){
         return new ResponseEntity<>(
+
                 BadRequestExceptionDetails.builder()
                         .timestamp(LocalDateTime.now())
                         .status(HttpStatus.BAD_REQUEST.value())

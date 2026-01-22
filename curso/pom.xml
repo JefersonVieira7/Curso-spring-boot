@@ -8,9 +8,10 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.5.4</version>
+		<version>3.2.5</version>
 		<relativePath/>
 	</parent>
+
 
 	<groupId>com.SpringBoot-essentials</groupId>
 	<artifactId>curso</artifactId>
@@ -19,13 +20,15 @@
 	<description>Curso de Spring Boot</description>
 
 	<properties>
-		<java.version>21</java.version>
+		<java.version>17</java.version>
 		<mapstruct.version>1.6.0</mapstruct.version>
 	</properties>
 
-
 	<dependencies>
-
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
 		<!-- MAPSTRUCT -->
 		<dependency>
 			<groupId>org.mapstruct</groupId>
@@ -39,12 +42,6 @@
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
-		</dependency>
-
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
 		</dependency>
 
 		<dependency>
