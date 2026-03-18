@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("animes")
@@ -31,6 +32,12 @@ public class AnimeController {
         return ResponseEntity.ok(animeService.listAll(pageable));
     }
 
+    @GetMapping(path = "/all")
+    public ResponseEntity<List<Anime>> listAll() {
+        log.info(dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
+        return ResponseEntity.ok(animeService.listAllNonPageable());
+    }
+
     @GetMapping(path = "/{id}")
     public ResponseEntity<?> findById(@PathVariable long id) {
         return ResponseEntity.ok(animeService.findByIdOrThrowBadRequestException(id));
@@ -41,6 +48,7 @@ public class AnimeController {
     public ResponseEntity<?> findByName(@PathVariable String name){
         return ResponseEntity.ok(animeService.findByName(name));
     }
+
     @PostMapping
     public ResponseEntity<Anime> save(@RequestBody @Valid AnimePostRequestBody animePostRequestBody) throws InterruptedException {
         return new ResponseEntity<>(animeService.save(animePostRequestBody), HttpStatus.CREATED);
