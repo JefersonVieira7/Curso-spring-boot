@@ -1,6 +1,8 @@
 package com.SpringBoot_essentials.curso.repository;
 
 import com.SpringBoot_essentials.curso.domain.Anime;
+import com.SpringBoot_essentials.curso.util.AnimeCreator;
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.log4j.Log4j2;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -20,19 +22,23 @@ class AnimeRepositoryTest {
     @Test
     @DisplayName("Save persists anime when Successful")
     void save_PersistAnime_WhenSuccessful(){
-        Anime animeToBeSaved = createAnime();
-        Anime animeSaved = this.animeRepository.save(animeToBeSaved);
+        Anime createAnimeToBeSaved = AnimeCreator.createAnimeToBeSaved();
+
+        Anime animeSaved = this.animeRepository.save(createAnimeToBeSaved);
+
         Assertions.assertThat(animeSaved).isNotNull();
+
         Assertions.assertThat(animeSaved.getId()).isNotNull();
-        Assertions.assertThat(animeSaved.getName()).isEqualTo(animeToBeSaved.getName());
+
+        Assertions.assertThat(animeSaved.getName()).isEqualTo(createAnimeToBeSaved.getName());
     }
 
     @Test
     @DisplayName("Save updates anime when Successful")
     void save_UpdatesAnime_WhenSuccessful(){
-        Anime animeToBeSaved = createAnime();
+        Anime createAnimeToBeSaved = AnimeCreator.createAnimeToBeSaved();
 
-        Anime animeSaved = this.animeRepository.save(animeToBeSaved);
+        Anime animeSaved = this.animeRepository.save(createAnimeToBeSaved);
 
         animeSaved.setName("Nanatsu no taizai");
 
@@ -49,9 +55,9 @@ class AnimeRepositoryTest {
     @Test
     @DisplayName("Delete removes anime when Successful")
     void delete_RemovesAnime_WhenSuccessful(){
-        Anime animeToBeSaved = createAnime();
+        Anime createAnimeToBeSaved = AnimeCreator.createAnimeToBeSaved();
 
-        Anime animeSaved = this.animeRepository.save(animeToBeSaved);
+        Anime animeSaved = this.animeRepository.save(createAnimeToBeSaved);
 
         this.animeRepository.delete(animeSaved);
 
@@ -62,17 +68,18 @@ class AnimeRepositoryTest {
 
     @Test
     @DisplayName("Find By Name returns list of anime when Successful")
-    void findyByname_ReturnsListOfAnime_WhenSuccessful(){
-        Anime animeToBeSaved = createAnime();
+    void findByName_ReturnsListOfAnime_WhenSuccessful(){
+        Anime createAnimeToBeSaved = AnimeCreator.createAnimeToBeSaved();
 
-        Anime animeSaved = this.animeRepository.save(animeToBeSaved);
+        Anime animeSaved = this.animeRepository.save(createAnimeToBeSaved);
 
         String name = animeSaved.getName();
 
         List<Anime> animes =  this.animeRepository.findByName(name);
 
-        Assertions.assertThat(animes).isNotEmpty();
-        Assertions.assertThat(animes).contains(animeSaved);
+        Assertions.assertThat(animes)
+                .isNotEmpty()
+                .contains(animeSaved);
     }
 
     @Test
@@ -83,10 +90,15 @@ class AnimeRepositoryTest {
         Assertions.assertThat(animes).isEmpty();
     }
 
+    @Test
+    @DisplayName("Save throw ConstraintViolationException when name is empty")
+    void save_ThrowConstraintViolationException_WhenNameIsEmpty(){
+        Anime anime = new Anime();
 
-    private Anime createAnime(){
-        return Anime.builder()
-                .name("Solo Leveling")
-                .build();
+        Assertions.assertThatExceptionOfType(ConstraintViolationException.class)
+                .isThrownBy(()-> this.animeRepository.save(anime))
+                .withMessageContaining("The anime name cannot be empty");
     }
+
+
 }
