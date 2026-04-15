@@ -4,7 +4,6 @@ import com.SpringBoot_essentials.curso.domain.Anime;
 import com.SpringBoot_essentials.curso.requests.AnimePostRequestBody;
 import com.SpringBoot_essentials.curso.requests.AnimePutResquestBody;
 import com.SpringBoot_essentials.curso.service.AnimeService;
-import com.SpringBoot_essentials.curso.util.DateUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -13,8 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -36,13 +33,13 @@ public class AnimeController {
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<?> findById(@PathVariable long id) {
+    public ResponseEntity<Anime> findById(@PathVariable long id) {
         return ResponseEntity.ok(animeService.findByIdOrThrowBadRequestException(id));
     }
 
 
     @GetMapping(path = "/name/{name}")
-    public ResponseEntity<?> findByName(@PathVariable String name){
+    public ResponseEntity<List<Anime>> findByName(@PathVariable String name){
         return ResponseEntity.ok(animeService.findByName(name));
     }
 

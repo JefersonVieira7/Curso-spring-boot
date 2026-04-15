@@ -1,6 +1,7 @@
 package com.SpringBoot_essentials.curso.util;
 
 import com.SpringBoot_essentials.curso.domain.Anime;
+import com.SpringBoot_essentials.curso.service.AnimeService;
 
 public class AnimeCreator {
     public static Anime createAnimeToBeSaved(){
