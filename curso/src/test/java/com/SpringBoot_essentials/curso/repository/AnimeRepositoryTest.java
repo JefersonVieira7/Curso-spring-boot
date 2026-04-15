@@ -99,6 +99,4 @@ class AnimeRepositoryTest {
                 .isThrownBy(()-> this.animeRepository.save(anime))
                 .withMessageContaining("The anime name cannot be empty");
     }
-
-
 }
