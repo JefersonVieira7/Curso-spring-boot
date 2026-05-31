@@ -47,12 +47,12 @@ public class AnimeService {
         animeRepository.delete(findByIdOrThrowBadRequestException(id));
     }
 
+    @Transactional
     public void replace(AnimePutResquestBody animePutResquestBody) {
         Anime savedAnime = findByIdOrThrowBadRequestException(animePutResquestBody.getId());
         Anime anime = AnimeMapper.INSTANCE.toAnime(animePutResquestBody);
         anime.setId(savedAnime.getId());
         animeRepository.save(anime);
     }
-
 
 }
