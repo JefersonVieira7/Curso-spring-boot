@@ -43,6 +43,7 @@ public class AnimeService {
         return animeRepository.save(AnimeMapper.INSTANCE.toAnime(animePostRequestBody));
     }
 
+    @Transactional
     public void delete(long id) {
         animeRepository.delete(findByIdOrThrowBadRequestException(id));
     }
