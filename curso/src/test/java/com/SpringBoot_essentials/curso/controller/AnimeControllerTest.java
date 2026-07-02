@@ -20,6 +20,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Collections;
@@ -75,13 +77,18 @@ class AnimeControllerTest {
     void listall_ReturnsListOfAnimes_whenSuccessful(){
         String expectedName = AnimeCreator.createValidAnime().getName();
 
-        List<Anime> animes = animeController.listAll().getBody();
+        UserDetails userDetails = User.builder()
+                .username("jeferson")
+                .password("{noop}academy")
+                .roles("USER", "ADMIN")
+                .build();
+
+        List<Anime> animes = animeController.listAll(userDetails).getBody();
 
         Assertions.assertThat(animes)
                 .isNotNull()
                 .isNotEmpty()
                 .hasSize(1);
-
 
         Assertions.assertThat(animes.get(0).getName()).isEqualTo(expectedName);
     }
